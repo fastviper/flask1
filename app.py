@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Flask Dockerized'
+    return 'Flask Dockerized, v2'
 
 
 if __name__ == '__main__':
