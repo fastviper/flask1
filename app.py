@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Flask Dockerized - last test on saturday!'
+    return 'Flask Dockerized v4, test webhook'
 
 
 if __name__ == '__main__':
