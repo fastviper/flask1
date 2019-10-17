@@ -97,12 +97,12 @@
 							<ul>
 							<li>setup Amazon ECR docker registry and push docker image to it</li>
 							<li>add test step in CI/CD pipeline to check if the webapp is running - before we do "production" deploy</li>
-							<li>deploy to kubernetes (Amazon EKS) cluster with kubectl apply</li>
+							<li>deploy to kubernetes (Amazon EKS) cluster with kubectl apply - this step does not work with Jenkins yet - security keys</li>
 							<li>Setup EC2 LoadBalancer with kubectl expose to load-balance instances of my app (see Instance ID in page header)</li>
 							</ul>
 						</li>						
+						<li>Next steps would be to setup roles/keys for Jenkins to deploy to kubernetes cluster, to complete CD pipeline</li>
 						<li>Application and pipeline code can be inspected on <a href='https://github.com/fastviper/flask1'>https://github.com/fastviper/flask1</a></li>
-						<li>Next steps would be to setup monotoring and provide rollback in case of issues with production env</li>
 					</ol>
               </div>
             </div>
@@ -123,7 +123,7 @@
 			  ↓ <br>
 			  <span style="border: 2px solid #fff;display:inline; padding:5pt">Jenkins executes Test step: curl -f -- just to check app is running and not throwing errors</span>
 			  ↓ <br>
-			  <span style="border: 2px solid #fff;display:inline; padding:5pt">Jenkins executes final CD step: kubernetes deployment (kubectl apply)</span>             
+			  <span style="border: 2px solid #fff;display:inline; padding:5pt">TODO: Jenkins executes final CD step: kubernetes deployment (kubectl apply)</span>             
             </div>
           </li>
         </ul>

@@ -4,7 +4,7 @@ pipeline {
     environment {
         APP_IMAGE = '677143160410.dkr.ecr.eu-central-1.amazonaws.com/cloud-demo/app-flask1:latest'
         APP_PORT = 5000
-		# this is random every time
+		// this is random every time
 		K8S_CLUSTER_NAME = 'i-0f8c17fe3d267b34b@eksworkshop-eksctl.eu-central-1.eksctl.io'
     }
     
@@ -43,12 +43,16 @@ pipeline {
 				sh 'curl -fs -o /dev/null http://localhost:$APP_PORT'
 			}
 	   }
+	   /*
+	   // this will not work without setting security key for Jenkins
 	   stage('Deploy') {
 			steps {
 				echo 'Deploy to kubernetes cluster - complete CD (note that for this LoadBalancer must already be setup)'
-				sh 'kubectl apply -f https://gitcdn.link/repo/fastviper/flask1/master/jenkins-pipeline/flask1-deployment.yaml'
+				##sh 'curl -o flask1-deployment.yaml https://raw.githubusercontent.com/fastviper/flask1/master/jenkins-pipeline/flask1-deployment.yaml'
+				##sh '/usr/local/bin/kubectl apply -f flask1-deployment.yaml'
 			}
 	   }
+	   */
 	   stage('CICD-Test') {
 			steps {
 				echo 'Testing app availablility via Load Balancer'
