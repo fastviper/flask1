@@ -83,10 +83,12 @@
 				<p>I've decided to put some effort into Cloud DevOps path and build a running solution on AWS:</p>
 					<ul>
 						<li>Started from setting up Kubernetes cluster on Amazon EKS with <a style="padding-right:0" href="https://eksctl.io">EKSCTL</a>. Managed to tweak settings to stay within Free Tier on AWS.</li>
-						<li>Next evening CI/CD pipeline on Jenkins
-							<ul><li>triggered by github commit with Jenkins webhook</li>
+						<li>CI/CD pipeline on Jenkins with following stages:
+							<ul><li> triggered by github commit with Jenkins webhook</li>
 							<li>building docker image with python webapp</li>
-							<li>running the webapp with docker-compose on the same machine as Jenkins</li>
+							<li>CI: running the webapp with docker-compose on the same machine as Jenkins</li>
+							<li>CI: test the webapp is running with <pre>curl</pre></li>
+							<li>CI: push docker image to docker registry service Amazon ECR</li>
 							</ul></li>
 						<li>TODO: deploy to kubernetes - prepare actual deployment, with replicas + distinguish between replicas by displaying hostname</li>
 					</UL>
