@@ -80,18 +80,30 @@
             <div class="about">
               <div class="about--banner">
                 <h2>Story</h2>
-				<p>I've decided to put some effort into Cloud DevOps path and build a running solution on AWS:</p>
-					<ul>
-						<li>Started from setting up Kubernetes cluster on Amazon EKS with <a style="padding-right:0" href="https://eksctl.io">EKSCTL</a>. Managed to tweak settings to stay within Free Tier on AWS.</li>
-						<li>CI/CD pipeline on Jenkins with following stages:
-							<ul><li> triggered by github commit with Jenkins webhook</li>
-							<li>building docker image with python webapp</li>
-							<li>CI: running the webapp with docker-compose on the same machine as Jenkins</li>
-							<li>CI: test the webapp is running with <pre>curl</pre></li>
-							<li>CI: push docker image to docker registry service Amazon ECR</li>
-							</ul></li>
-						<li>TODO: deploy to kubernetes - prepare actual deployment, with replicas + distinguish between replicas by displaying hostname</li>
-					</UL>
+				<p>I've decided to show my engagement into Cloud DevOps path and build a running solution on AWS. Ideally I wanted full CI/CD pipeline on Jenkins, deploying to kubernetes. I made it in under a week.
+				
+				</p>
+					<ol>
+						<li>Started from setting up Kubernetes cluster on Amazon EKS with <u><a style="padding-right:0" href="https://eksctl.io">EKSCTL</a></u>.</li>
+						<li>Next day I prepared CI pipeline on Jenkins with following stages:
+							<ul>
+							<li>github commit triggering Jenkins CI/CD pipeline via webhook</li>
+							<li>build docker image containing python webapp</li>
+							<li>run the webapp with docker-compose on the same machine as Jenkins - <u><a href='http://ec2-3-124-6-102.eu-central-1.compute.amazonaws.com:5000'>see here</a></u></li>
+							</ul>
+						</li>
+						<li>Use nice free web template</li>
+						<li>Then decided to complete CD path:
+							<ul>
+							<li>setup Amazon ECR docker registry and push docker image to it</li>
+							<li>add test step in CI/CD pipeline to check if the webapp is running - before we do "production" deploy</li>
+							<li>deploy to kubernetes (Amazon EKS) cluster with kubectl apply</li>
+							<li>Setup EC2 LoadBalancer with kubectl expose to load-balance instances of my app (see Instance ID in page header)</li>
+							</ul>
+						</li>						
+						<li>Application and pipeline code can be inspected on <a href='https://github.com/fastviper/flask1'>https://github.com/fastviper/flask1</a></li>
+						<li>Next steps would be to setup monotoring and provide rollback in case of issues with production env</li>
+					</ol>
               </div>
             </div>
           </li>
@@ -105,12 +117,13 @@
 			  ↓ <br>
               <span style="border: 2px solid #fff;display:inline; padding:5pt">Jenkins executes Preparation step: checkout from github</span>
 			  ↓ <br>
-              <span style="border: 2px solid #fff;display:inline; padding:5pt">Jenkins executes Build step: docker build</span>
+              <span style="border: 2px solid #fff;display:inline; padding:5pt">Jenkins executes Build step: docker build && docker push</span>
               ↓ <br>
-              <span style="border: 2px solid #fff;display:inline; padding:5pt">Jenkins executes Deploy step: docker-compose up</span>
-                
-               <p>TODO: deploy to remote k8s cluster</p> 
-              
+              <span style="border: 2px solid #fff;display:inline; padding:5pt">Jenkins executes CI-start step: docker-compose up</span>
+			  ↓ <br>
+			  <span style="border: 2px solid #fff;display:inline; padding:5pt">Jenkins executes Test step: curl -f -- just to check app is running and not throwing errors</span>
+			  ↓ <br>
+			  <span style="border: 2px solid #fff;display:inline; padding:5pt">Jenkins executes final CD step: kubernetes deployment (kubectl apply)</span>             
             </div>
           </li>
         </ul>
