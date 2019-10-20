@@ -6,6 +6,11 @@ pipeline {
 		APP_PORT = 5000
 		// Amazon EKS cluster name -- take a look at /home/ec2-user/.kube/config when using eksctl to setup Amazon EKS
 		K8S_CLUSTER_NAME = 'i-0f8c17fe3d267b34b@eksworkshop-eksctl.eu-central-1.eksctl.io'
+		
+		// better source it from file, not commit to git -- but for proof of concept, it can stay here
+		// They are in --> /usr/local/bin/jenkins_aws_creds.sh
+		AWS_SECRET_ACCESS_KEY="lF4WZZ/E4oALpl3PBaStU2BqJQCbTQqa9uhCDIof"
+		AWS_ACCESS_KEY_ID="AKIAZ3KHAUZNKSQDARL5"
     }
     
 	stages {
@@ -66,21 +71,22 @@ pipeline {
 		}
 		// this will not work without setting security key for Jenkins
 		stage('Deploy') {
-			environment {
-				// better source it from file, not commit to git -- but for proof of concept, it can stay here
-				// They are in --> /usr/local/bin/jenkins_aws_creds.sh
-				AWS_SECRET_ACCESS_KEY="lF4WZZ/E4oALpl3PBaStU2BqJQCbTQqa9uhCDIof"
-				AWS_ACCESS_KEY_ID="AKIAZ3KHAUZNKSQDARL5"
-			}
+
 		
 			steps {
 				// first we need the credentials to operate on cluster
 				// this is already set up, and it's done once - by mapping AWS IAM role to kubernetes RBAC
 				// we only need variables, as in environment above
 				// REMEMBER TO GIVE jenkins RIGHTS TO DO DEPLOYMENTS -- give_jenkins_rights_on_cluster.sh
-				// let's verify this, ok? :)
+				//
+				// Please, pretty please - check ~jenkins/.kube/config - this file contains information on:
+				// - cluster id
+				// - connection between AWS IAM and kubernetes RBAC (users: section) - only then it will work
+				// - no file = kubectl not works, copy from user that created cluster with eksctl
+				//
+				// let's verify it works, ok? :)
 				sh "aws sts get-caller-identity"
-				sh '/usr/local/bin/kubectl get pods -l app=flask1'
+				sh "/usr/local/bin/kubectl get pods -l app=flask1"
 			
 				echo 'Deploy to kubernetes cluster - complete CD (note that for this LoadBalancer must already be setup!)'
 				sh 'curl -o flask1-deployment.yaml https://raw.githubusercontent.com/fastviper/flask1/master/jenkins-pipeline/flask1-deployment.yaml'
