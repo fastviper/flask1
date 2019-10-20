@@ -95,7 +95,7 @@ pipeline {
 			
 				echo 'Deploy to kubernetes cluster - complete CD (note that for this LoadBalancer must already be setup!)'
 				sh "curl -o /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml.tmpl https://raw.githubusercontent.com/fastviper/flask1/master/jenkins-pipeline/flask1-deployment.yaml "
-				sh "cat /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml.tmpl | sed -e \"s!SED_FOR_TAGGED_IMAGE!$APP_IMAGE!\" > /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml"
+				sh "cat /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml.tmpl | sed -e \"s!SED_FOR_TAGGED_IMAGE!$APP_IMAGE!\" -e 's/THIS_STRING_IS_REPLACED_EVERY_RUN/$BUILD_ID/' > /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml"
 				sh "/usr/local/bin/kubectl apply -f /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml"
 			}
 		}

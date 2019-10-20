@@ -17,5 +17,9 @@ spec:
       containers:
       - name: flask1
         image: SED_FOR_TAGGED_IMAGE
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
+        env:
+        - name: FOR_GODS_SAKE_PLEASE_REDEPLOY
+          value: 'THIS_STRING_IS_REPLACED_EVERY_RUN'
