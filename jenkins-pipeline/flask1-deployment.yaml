@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: flask1
-        image: $APP_IMAGE
+        image: SED_FOR_TAGGED_IMAGE
         ports:
         - containerPort: 5000

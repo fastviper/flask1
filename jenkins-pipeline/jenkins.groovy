@@ -7,11 +7,7 @@ pipeline {
 		// Amazon EKS cluster name -- take a look at /home/ec2-user/.kube/config when using eksctl to setup Amazon EKS
 		K8S_CLUSTER_NAME = 'i-0f8c17fe3d267b34b@eksworkshop-eksctl.eu-central-1.eksctl.io'
 		
-		// better source it from file, not commit to git -- but for proof of concept, it can stay here
-		// They are in --> /usr/local/bin/jenkins_aws_creds.sh
-		AWS_SECRET_ACCESS_KEY="lF4WZZ/E4oALpl3PBaStU2BqJQCbTQqa9uhCDIof"
-		AWS_ACCESS_KEY_ID="AKIAZ3KHAUZNKSQDARL5"
-    }
+	}
     
 	stages {
 		stage('Preparation') {
@@ -71,6 +67,15 @@ pipeline {
 		}
 		// this will not work without setting security key for Jenkins
 		stage('Deploy') {
+			environment {
+				// The switch of IAM users is done here, because jenkis IAM cannot push to ECR - TODO!!
+			
+				// better source it from file, not commit to git -- but for proof of concept, it can stay here
+				// They are in --> /usr/local/bin/jenkins_aws_creds.sh
+				AWS_SECRET_ACCESS_KEY="lF4WZZ/E4oALpl3PBaStU2BqJQCbTQqa9uhCDIof"
+				AWS_ACCESS_KEY_ID="AKIAZ3KHAUZNKSQDARL5"
+				
+			}
 
 		
 			steps {
@@ -89,8 +94,9 @@ pipeline {
 				sh "/usr/local/bin/kubectl get pods -l app=flask1"
 			
 				echo 'Deploy to kubernetes cluster - complete CD (note that for this LoadBalancer must already be setup!)'
-				sh 'curl -o flask1-deployment.yaml https://raw.githubusercontent.com/fastviper/flask1/master/jenkins-pipeline/flask1-deployment.yaml'
-				sh "APP_IMAGE=$APP_IMAGE /usr/local/bin/kubectl apply -f flask1-deployment.yaml"
+				sh "curl -o /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml.tmpl https://raw.githubusercontent.com/fastviper/flask1/master/jenkins-pipeline/flask1-deployment.yaml "
+				sh "cat /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml.tmpl | sed -e \"s!SED_FOR_TAGGED_IMAGE!$APP_IMAGE!\" > /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml"
+				sh "/usr/local/bin/kubectl apply -f /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml"
 			}
 		}
 		stage('CICD-Test') {
