@@ -29,6 +29,6 @@ def random_string(letters: list, length=8):
 
 # Initialize instance id - just a random hexstring. This makes it possible to observe load balancing to multiple instances
 this_node = random_string(string.hexdigits, 4)
-git_commit_short = os.environ[]
+git_commit_short = os.environ['git_commit_short']
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
