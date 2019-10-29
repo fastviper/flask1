@@ -1,0 +1,20 @@
+##################################################
+# EKSCTL Config for EKSworkshop.com - For Kubeflow
+##################################################
+
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+availabilityZones: [     "eu-central-1a",      "eu-central-1b",      "eu-central-1c"  ]
+metadata:
+  name: eksworkshop-eksctl
+  region: eu-central-1
+  version: "1.13"
+
+nodeGroups:
+  - name: micro-nodegroup
+    instanceType: t2.micro
+    desiredCapacity: 2    
+    minSize: 1
+    maxSize: 3
+    availabilityZones: ["eu-central-1a"]
+

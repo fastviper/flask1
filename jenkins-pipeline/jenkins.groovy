@@ -70,13 +70,11 @@ pipeline {
 			environment {
 				// The switch of IAM users is done here, because jenkis IAM cannot push to ECR - TODO!!
 			
-				// better source it from file, not commit to git -- but for proof of concept, it can stay here
-				// They are in --> /usr/local/bin/jenkins_aws_creds.sh
-				AWS_SECRET_ACCESS_KEY="lF4WZZ/E4oALpl3PBaStU2BqJQCbTQqa9uhCDIof"
-				AWS_ACCESS_KEY_ID="AKIAZ3KHAUZNKSQDARL5"
-				
+				// see https://jenkins.io/doc/book/pipeline/jenkinsfile/#handling-credentials
+				AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+				AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
 			}
-
+			 
 		
 			steps {
 				// first we need the credentials to operate on cluster
@@ -92,6 +90,7 @@ pipeline {
 				// let's verify it works, ok? :)
 				sh "aws sts get-caller-identity"
 				sh "/usr/local/bin/kubectl get pods -l app=flask1"
+				echo $AWS_ACCESS_KEY_ID
 			
 				echo 'Deploy to kubernetes cluster - complete CD (note that for this LoadBalancer must already be setup!)'
 				sh "curl -o /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml.tmpl https://raw.githubusercontent.com/fastviper/flask1/master/jenkins-pipeline/flask1-deployment.yaml "
