@@ -13,7 +13,7 @@ metadata:
 nodeGroups:
   - name: micro-nodegroup
     instanceType: t2.micro
-    desiredCapacity: 2    
+    desiredCapacity: 3    
     minSize: 1
     maxSize: 3
     availabilityZones: ["eu-central-1a"]

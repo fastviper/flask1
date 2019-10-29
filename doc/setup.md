@@ -8,9 +8,12 @@ sudo yum install jenkins java-1.8.0 -y
 sudo yum remove java-1.7.0-openjdk
 sudo service jenkins start
 
+Remember to add user jenkins to local ec2 group docker !
+
 # Setup Jenkins
-1. add git plugin and git credentials
-2. create pipeline - use jenkins-pipeline/jenkins.groovy
+1. add git plugin and set git credentials (personal github token)
+2. add plugin 'Force locale en-US'
+3. create pipeline - use jenkins-pipeline/jenkins.groovy
 
 # install docker-compose on ec2
 Just download it 
@@ -27,8 +30,25 @@ My image:
 
 $ eksctl create cluster  --alb-ingress-access  -f eksworkshop-kubeflow_t2micro.yml
 
+# run flask1 on Kubernetes
+$ kubectl apply -f jenkins-pipeline\flask1-deployment-latest.yaml
+
+# Scale EKS cluster
+$ kubectl get nodes
+$ eksctl get nodegroup --cluster eksworkshop-eksctl
+$ eksctl scale nodegroup --cluster=eksworkshop-eksctl --name=micro-nodegroup --nodes=3 
+
+# add load balancer (Amazon ELB)
+One has to first deploy flask1 to cluster, otherwise there is nothing to expose, right?
+
+$ kubectl expose deployment flask1-deployment --type=LoadBalancer --port=8888 --target-port=5000
+$ kubectl get svc|grep ^flask1  ## ExternalIP
+
+# delete load balancer
+$ kubectl delete service flask1-deployment
+
 # Delete EKS cluster:
-(might require kubectl delete on services like load balancer first)
+(will require kubectl delete on services like load balancer first)
 
 $ eksctl delete cluster --name eksworkshop-eksctl
 

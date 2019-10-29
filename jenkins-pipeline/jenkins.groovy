@@ -4,15 +4,12 @@ pipeline {
     environment {
 		APP_IMAGE = "677143160410.dkr.ecr.eu-central-1.amazonaws.com/cloud-demo/app-flask1"
 		APP_PORT = 5000
-		// Amazon EKS cluster name -- take a look at /home/ec2-user/.kube/config when using eksctl to setup Amazon EKS
-		K8S_CLUSTER_NAME = 'i-0f8c17fe3d267b34b@eksworkshop-eksctl.eu-central-1.eksctl.io'
-		
 	}
     
 	stages {
 		stage('Preparation') {
 			environment {
-				git_commit_short = "ASSERT FALSE"
+				git_commit_short = "None"
 			}
 
 			steps {
