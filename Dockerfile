@@ -4,6 +4,7 @@ FROM python:3.6-slim-buster
 RUN pip install flask
 COPY . /app
 WORKDIR /app
+ARG git_commit_short
 #RUN pip install -r requirements.txt
 ENTRYPOINT ["python"]
 CMD ["app.py"]

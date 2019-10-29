@@ -3,6 +3,7 @@ import socket
 import os.path
 import random
 import string
+import os
 
 app = Flask(__name__)
 
@@ -11,7 +12,7 @@ app = Flask(__name__)
 def the_app():
 	"""Serve index.html treating is as string template"""
 	with open('tmpl/index.html', encoding='utf-8') as tmpl:
-		return tmpl.read().format(node=this_node)
+		return tmpl.read().format(node=this_node, git_commit=git_commit_short)
 
 
 @app.route('/assets/<path:path>')
@@ -28,5 +29,6 @@ def random_string(letters: list, length=8):
 
 # Initialize instance id - just a random hexstring. This makes it possible to observe load balancing to multiple instances
 this_node = random_string(string.hexdigits, 4)
+git_commit_short = os.environ[]
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')

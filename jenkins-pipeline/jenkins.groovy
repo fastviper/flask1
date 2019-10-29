@@ -32,7 +32,7 @@ pipeline {
 				echo APP_IMAGE
 				
 				// docker build
-				sh "docker build -t $APP_IMAGE ."
+				sh "docker build --build-arg git_commit_short=$git_commit_short -t $APP_IMAGE ."
 
 				// docker registry login
 				sh '$(aws ecr get-login --region eu-central-1 --no-include-email)'
@@ -87,7 +87,6 @@ pipeline {
 				// let's verify it works, ok? :)
 				sh "aws sts get-caller-identity"
 				sh "/usr/local/bin/kubectl get pods -l app=flask1"
-				echo $AWS_ACCESS_KEY_ID
 			
 				echo 'Deploy to kubernetes cluster - complete CD (note that for this LoadBalancer must already be setup!)'
 				sh "curl -o /var/lib/jenkins/tmp/jenkins-flask1-deployment.yaml.tmpl https://raw.githubusercontent.com/fastviper/flask1/master/jenkins-pipeline/flask1-deployment.yaml "
@@ -100,11 +99,7 @@ pipeline {
 				// remember to setup load balancer and wait for DNS propagation, 15s won't be enough initially -- flask1-load-balancer-setup.sh
 				echo 'Testing app availablility via Load Balancer'
 				sh 'sleep 15'
-				sh 'curl -fs -o /dev/null http://a54e6417ff2cd11e9837a06cb65aee8e-420668248.eu-central-1.elb.amazonaws.com:8888'
-				sh 'curl -fs -o /dev/null http://a54e6417ff2cd11e9837a06cb65aee8e-420668248.eu-central-1.elb.amazonaws.com:8888'
-				sh 'curl -fs -o /dev/null http://a54e6417ff2cd11e9837a06cb65aee8e-420668248.eu-central-1.elb.amazonaws.com:8888'
-				sh 'curl -fs -o /dev/null http://a54e6417ff2cd11e9837a06cb65aee8e-420668248.eu-central-1.elb.amazonaws.com:8888'
-				sh 'curl -fs -o /dev/null http://a54e6417ff2cd11e9837a06cb65aee8e-420668248.eu-central-1.elb.amazonaws.com:8888'
+				sh 'curl -fs -o /dev/null http://a823dd755fa9411e9b70d0ab65f50c1c-577885439.eu-central-1.elb.amazonaws.com:8888'
 			}
 		}
 

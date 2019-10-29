@@ -76,7 +76,6 @@ EoF
 4. this maps user jenkins in Kubernetes to AWS Jenkins Account, specified by userarn
 kubectl apply -f ~/tmp/jenkins-aws-auth.yaml
 5. Crete role able to deploy pods and bind it to kubernetes user jenkins. At this point we have AWS IAM mapped to kubernetes user. Therefore it is enough to set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY (see pt 1) to gain access to kubernetes.
-
 $ give_jenkins_rights_on_cluster.sh
 
 # copy ~/.kube/ to jenkins
