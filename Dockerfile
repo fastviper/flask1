@@ -5,6 +5,7 @@ RUN pip install flask
 COPY . /app
 WORKDIR /app
 ARG git_commit_short
-#RUN pip install -r requirements.txt
+ENV GHASH=$git_commit_short
+
 ENTRYPOINT ["python"]
 CMD ["app.py"]
