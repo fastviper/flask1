@@ -31,5 +31,6 @@ def random_string(letters: list, length=8):
 this_node = random_string(string.hexdigits, 4)
 # inject commit id into web app
 git_commit_short = os.environ['GHASH']
+git_commit_short2 = os.environ['NOT EXISTS']
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
