@@ -99,7 +99,7 @@ pipeline {
 				// remember to setup load balancer and wait for DNS propagation, 15s won't be enough initially -- flask1-load-balancer-setup.sh
 				echo 'Testing app availablility via Load Balancer'
 				sh 'sleep 15'
-				sh 'curl -fs -o /dev/null http://a823dd755fa9411e9b70d0ab65f50c1c-577885439.eu-central-1.elb.amazonaws.com:8888'
+				sh 'curl -fs -o /dev/null a9f9ad300fae211e9ac8c0621de89f28-729101062.eu-central-1.elb.amazonaws.com:8888'
 			}
 		}
 

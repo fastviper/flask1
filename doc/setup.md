@@ -31,7 +31,7 @@ My image:
 $ eksctl create cluster  --alb-ingress-access  -f eksworkshop-kubeflow_t2micro.yml
 
 # run flask1 on Kubernetes
-$ kubectl apply -f jenkins-pipeline\flask1-deployment-latest.yaml
+$ kubectl apply -f jenkins-pipeline/flask1-deployment-latest.yaml
 
 # Scale EKS cluster
 $ kubectl get nodes
@@ -87,9 +87,10 @@ In order to limit expenses, EKS cluster must be deleted when not used. Follow th
 1. Start EKS cluster
 2. connect AWS IAM to Kubernetes - steps 4 and 5
 3. copy ~/.kube/ to jenkins
-4. add load balancer (Amazon ELB)
-4. change jenkins.groovy to include current URL of load balancer on last step: CICD Test (FIX: get it from kubectl)
-5. push to git
+4. start application flask1
+5. add load balancer (Amazon ELB)
+6. change jenkins.groovy to include current URL of load balancer on last step: CICD Test (FIX: get it from kubectl)
+7. push to git
 
 # re-setup after bringing EC2 main instance down
 1. change webhook in github.com to new ec2 address
